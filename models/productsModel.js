@@ -1,18 +1,22 @@
 const connection = require('./connection');
 
-const registerProduct = async (name, quantity) => {
-  const queryString = 'INSERT INTO StoreManager.products (name, quantity) VALUES (?, ?);';
-  const [result] = await connection.query(queryString, [name, quantity]);
-  return { id: result.insertId, name, quantity };
+const createProduct = async (name, quantity) => {
+  const result = await connection.query(
+    `INSERT INTO products (name, quantity)
+    VALUES (?, ?)`, [name, quantity],
+  );
+  return result[0].insertId;
 };
 
-const searchProductByName = async (name) => {
-  const queryString = 'SELECT name FROM StoreManager.products WHERE name LIKE ? LIMIT 1;';
-  const result = await connection.query(queryString, [name]);
+const searchByName = async (name) => {
+  const result = await connection.query(
+    `SELECT name FROM products
+    WHERE name = ?`, [name],
+  );
   return result[0];
 };
 
 module.exports = {
-  registerProduct,
-  searchProductByName,
+  createProduct,
+  searchByName,
 };

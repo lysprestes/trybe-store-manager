@@ -1,60 +1,72 @@
-const models = require('../models/productsModel');
+const productsModel = require('../models/productsModel');
 
-const validateNameDuplicated = async (name) => {
-  const searchProduct = await models.searchProductByName(name);
-  if (searchProduct.length !== 0) return true;
-  return false;
+const createProduct = async (name, quantity) => {
+  const result = await productsModel.createProduct(name, quantity);
+  return {
+    status: 201,
+    result: { id: result, name, quantity },
+    };
 };
 
-const validateName = async (name) => {
-  if (!name || typeof name !== 'string') {
-  return { 
-    response: { message: '"name" is required' }, status: 400 }; 
-}
+const validateName = (name) => {
+  if (!name) {
+    return {
+      status: 400,
+      message: '"name" is required',
+    };
+  }
+};
+
+const validateNameLength = (name) => {
   if (name.length < 5) {
-  return { 
-    response: { message: '"name" length must be at least 5 characters long' },
-    status: 422 }; 
-}
-  if (await validateNameDuplicated(name)) {
-  return { 
-    response: { message: 'Product already exists' }, status: 409 }; 
-}
-  return false;
+    return {
+      status: 422,
+      message: '"name" length must be at least 5 characters long',
+    };
+  }
 };
 
 const validateQuantity = (quantity) => {
   if (!quantity && quantity !== 0) {
-  return {
-    response: { message: '"quantity" is required' }, status: 400 }; 
-}
-  if (quantity < 1 || typeof quantity !== 'number') {
-  return { 
-    response: { 
-      message: '"quantity" must be a number larger than or equal to 1', 
-    },
-    status: 422 }; 
-}
-  return false;
+    return {
+      status: 400,
+      message: '"quantity" is required',
+    };
+  }
 };
 
-const validateReqBodyProduct = async (name, quantity) => {
-  const nameValidated = await validateName(name);
-  const qntValidated = validateQuantity(quantity);
-  if (nameValidated) return nameValidated;
-  if (qntValidated) return qntValidated;
-  return false;
+const validateQuantityNumber = (quantity) => {
+  if (typeof quantity !== 'number' || quantity < 1) {
+    return {
+      status: 422,
+      message: '"quantity" must be a number larger than or equal to 1',
+    };
+  }
 };
 
-const registerProduct = async (name, quantity) => {
-  const validatedBody = await validateReqBodyProduct(name, quantity);
-  if (validatedBody) return validatedBody;
-  const regProduct = await models.registerProduct(name, quantity);
-  return { status: 201, response: regProduct };
+const validateDuplicate = async (name) => {
+  const result = await productsModel.searchByName(name);
+  if (result.length > 0) {
+    return {
+      status: 409,
+      message: 'Product already exists',
+    };
+  }
 };
 
-module.exports = { 
-  validateName,
-  validateQuantity,
-  registerProduct,
+const validateNameProduct = async (name) => {
+  if (validateName(name)) return validateName(name);
+  if (validateNameLength(name)) return validateNameLength(name);
+  if (await validateDuplicate(name)) return validateDuplicate(name);
+};
+
+const validateQuantityProduct = (quantity) => {
+  if (validateQuantity(quantity)) return validateQuantity(quantity);
+  if (validateQuantityNumber(quantity)) return validateQuantityNumber(quantity);
+};
+
+module.exports = {
+  createProduct,
+  validateNameProduct,
+  validateQuantityProduct,
 };

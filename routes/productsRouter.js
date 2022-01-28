@@ -1,11 +1,8 @@
 const express = require('express');
+const { validateProduct, createProductMid } = require('../middlewares/productsMid');
 
 const router = express.Router();
 
-const { 
-  registerProductMiddle, 
-} = require('../controllers/productsController');
-
-router.post('/', registerProductMiddle);
+router.post('/', validateProduct, createProductMid);
 
 module.exports = router;
