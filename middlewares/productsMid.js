@@ -2,6 +2,8 @@ const {
   createProduct,
   validateNameProduct,
   validateQuantityProduct,
+  getAllProducts,
+  searchById,
 } = require('../services/productsService');
 
 const validateProduct = async (req, res, next) => {
@@ -24,7 +26,19 @@ const createProductMid = async (req, res) => {
   return res.status(result.status).json(result.result);
 };
 
+const productsListMid = async (req, res) => {
+  const result = await getAllProducts();
+  return res.status(result.status).json(result.result);
+};
+
+const searchByIdMid = async (req, res) => {
+  const result = await searchById(req.params.id);
+  return res.status(result.status).json(result.result);
+};
+
 module.exports = {
   createProductMid,
   validateProduct,
+  productsListMid,
+  searchByIdMid,
 };

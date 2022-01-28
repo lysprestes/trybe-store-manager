@@ -65,8 +65,34 @@ const validateQuantityProduct = (quantity) => {
   if (validateQuantityNumber(quantity)) return validateQuantityNumber(quantity);
 };
 
+const getAllProducts = async () => {
+  const result = await productsModel.productsList();
+  return {
+    status: 200,
+    result,
+    };
+};
+
+const searchById = async (id) => {
+  const result = await productsModel.getProductById(id);
+  if (result.length === 0) {
+    return {
+      status: 404,
+      result: {
+        message: 'Product not found',
+      },
+    };
+  }
+  return {
+    status: 200,
+    result: result[0],
+    };
+};
+
 module.exports = {
   createProduct,
   validateNameProduct,
   validateQuantityProduct,
+  getAllProducts,
+  searchById,
 };

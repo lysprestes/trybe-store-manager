@@ -16,7 +16,24 @@ const searchByName = async (name) => {
   return result[0];
 };
 
+const productsList = async () => {
+  const result = await connection.query(
+    'SELECT * FROM products',
+  );
+  return result[0];
+};
+
+const getProductById = async (id) => {
+  const result = await connection.query(
+    `SELECT * FROM products
+    WHERE id = ?`, [id],
+  );
+  return result[0];
+};
+
 module.exports = {
   createProduct,
   searchByName,
+  productsList,
+  getProductById,
 };
