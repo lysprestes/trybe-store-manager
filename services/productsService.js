@@ -57,7 +57,6 @@ const validateDuplicate = async (name) => {
 const validateNameProduct = async (name) => {
   if (validateName(name)) return validateName(name);
   if (validateNameLength(name)) return validateNameLength(name);
-  if (await validateDuplicate(name)) return validateDuplicate(name);
 };
 
 const validateQuantityProduct = (quantity) => {
@@ -89,10 +88,29 @@ const searchById = async (id) => {
     };
 };
 
+const updateProduct = async (id, name, quantity) => {
+  const result = await productsModel.getProductById(id);
+  if (result.length === 0) {
+    return {
+      status: 404,
+      result: {
+        message: 'Product not found',
+      },
+    };
+  }
+  await productsModel.updateProduct(id, name, quantity);
+  return {
+    status: 200,
+    result: { id, name, quantity },
+  };
+};
+
 module.exports = {
   createProduct,
   validateNameProduct,
+  validateDuplicate,
   validateQuantityProduct,
   getAllProducts,
   searchById,
+  updateProduct,
 };
