@@ -6,7 +6,8 @@ const {
   validateProduct,
   createProductMid,
   updateProductMid,
-} = require('../middlewares/productsMid');
+  deleteProductMid,
+} = require('../controllers/productsController');
 
 const router = express.Router();
 
@@ -14,6 +15,8 @@ router.get('/:id', searchByIdMid);
 router.get('/', productsListMid);
 
 router.put('/:id', validateUpdate, updateProductMid);
+
+router.delete('/:id', deleteProductMid);
 
 router.post('/', validateProduct, createProductMid);
 
