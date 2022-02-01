@@ -2,6 +2,7 @@ const {
   createSales,
   validateSale,
   salesListById,
+  updateSales,
 } = require('../services/salesService');
 
 const { salesList } = require('../models/salesModel');
@@ -26,7 +27,19 @@ const salesListMid = async (req, res, _next) => {
 
 const salesListByIdMid = async (req, res, _next) => {
   const result = await salesListById(req.params.id);
+  console.log(req.params.id, 'esse eh o req id!');
   res.status(result.status).json(result.response);
+};
+
+const updateSalesMid = async (req, res) => {
+  const [product] = req.body;
+  const result = await updateSales(req.params.id, product.product_id, product.quantity);
+  res.status(result.status).json(
+    {
+      saleId: req.params.id,
+      itemUpdated: [product],
+    },        
+  );
 };
 
 module.exports = {
@@ -34,4 +47,5 @@ module.exports = {
   validateSalesMid,
   salesListMid,
   salesListByIdMid,
+  updateSalesMid,
 };

@@ -4,6 +4,7 @@ const {
   validateSalesMid,
   salesListMid,
   salesListByIdMid,
+  updateSalesMid,
 } = require('../controllers/salesController');
 
 const router = express.Router();
@@ -11,7 +12,7 @@ const router = express.Router();
 router.get('/:id', salesListByIdMid);
 router.get('/', salesListMid);
 
-router.put('/:id');
+router.put('/:id', validateSalesMid, updateSalesMid);
 
 router.delete('/:id');
 

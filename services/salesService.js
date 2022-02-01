@@ -52,8 +52,17 @@ const salesListById = async (saleId) => {
   };
 };
 
+const updateSales = async (saleId, productId, quantity) => {
+  const result = await salesModel.updateSales(saleId, productId, quantity);
+  return {
+    status: 200,
+    response: result,
+  };
+};
+
 module.exports = {
   createSales,
   validateSale,
   salesListById,
+  updateSales,
 };
