@@ -1,13 +1,16 @@
 const {
   createProduct,
-  validateNameProduct,
-  validateDuplicate,
-  validateQuantityProduct,
   getAllProducts,
   searchById,
   updateProduct,
   deleteProduct,
 } = require('../services/productsService');
+
+const {
+  validateNameProduct,
+  validateDuplicate,
+  validateQuantityProduct,
+} = require('../utils/productsValidations');
 
 const validateProduct = async (req, res, next) => {
   const { name, quantity } = req.body;

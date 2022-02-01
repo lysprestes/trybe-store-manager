@@ -1,9 +1,12 @@
 const {
   createSales,
-  validateSale,
   salesListById,
   updateSales,
 } = require('../services/salesService');
+
+const {
+  validateSale,
+} = require('../utils/salesValidations');
 
 const { salesList } = require('../models/salesModel');
 
