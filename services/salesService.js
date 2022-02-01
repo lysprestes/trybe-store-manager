@@ -36,7 +36,24 @@ const validateSale = (reqBody) => {
   return null;
 };
 
+const salesListById = async (saleId) => {
+  const list = await salesModel.salesListById(saleId);
+  if (list.length === 0) {
+    return {
+      status: 404,
+      response: {
+        message: 'Sale not found',
+      },
+    };
+  }
+  return {
+    status: 200,
+    response: list,
+  };
+};
+
 module.exports = {
   createSales,
   validateSale,
+  salesListById,
 };

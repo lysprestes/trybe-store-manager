@@ -2,12 +2,14 @@ const express = require('express');
 const {
   createSalesMid,
   validateSalesMid,
+  salesListMid,
+  salesListByIdMid,
 } = require('../controllers/salesController');
 
 const router = express.Router();
 
-router.get('/:id');
-router.get('/');
+router.get('/:id', salesListByIdMid);
+router.get('/', salesListMid);
 
 router.put('/:id');
 

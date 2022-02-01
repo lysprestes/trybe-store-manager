@@ -1,7 +1,10 @@
 const {
   createSales,
   validateSale,
+  salesListById,
 } = require('../services/salesService');
+
+const { salesList } = require('../models/salesModel');
 
 const createSalesMid = async (req, res, _next) => {
   const result = await createSales(req.body);
@@ -16,7 +19,19 @@ const validateSalesMid = (req, res, next) => {
   next();
 };
 
+const salesListMid = async (req, res, _next) => {
+  const result = await salesList();
+  res.status(200).json(result);
+};
+
+const salesListByIdMid = async (req, res, _next) => {
+  const result = await salesListById(req.params.id);
+  res.status(result.status).json(result.response);
+};
+
 module.exports = {
   createSalesMid,
   validateSalesMid,
+  salesListMid,
+  salesListByIdMid,
 };
