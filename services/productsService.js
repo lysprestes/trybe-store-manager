@@ -126,6 +126,8 @@ module.exports = {
   createProduct,
   validateNameProduct,
   validateDuplicate,
+  validateQuantity,
+  validateQuantityNumber,
   validateQuantityProduct,
   getAllProducts,
   searchById,

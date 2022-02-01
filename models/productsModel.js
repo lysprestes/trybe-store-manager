@@ -1,11 +1,11 @@
 const connection = require('./connection');
 
 const createProduct = async (name, quantity) => {
-  const result = await connection.query(
+  const [{ insertId }] = await connection.query(
     `INSERT INTO products (name, quantity)
     VALUES (?, ?)`, [name, quantity],
   );
-  return result[0].insertId;
+  return insertId;
 };
 
 const searchByName = async (name) => {
